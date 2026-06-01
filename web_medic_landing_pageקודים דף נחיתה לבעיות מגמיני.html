@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Medic | Healing Your Website's Performance</title>
+    <!-- Include Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Include Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Include Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            purple: '#9333EA', // Purple-600
+                            pink: '#EC4899',   // Pink-500
+                            blue: '#3B82F6',   // Blue-500
+                            lightBlue: '#93C5FD', // Blue-300
+                            dark: '#111827',
+                            light: '#F3F4F6'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'gradient-brand': 'linear-gradient(135deg, #9333EA 0%, #EC4899 50%, #3B82F6 100%)',
+                        'gradient-subtle': 'linear-gradient(to right, #F3F4F6, #E5E7EB)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom animations for elements */
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Styling for the animated background gradient */
+        .bg-animated {
+            background: linear-gradient(-45deg, #9333EA, #EC4899, #3B82F6);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Glassmorphism effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 antialiased bg-gray-50 flex flex-col min-h-screen">
+
+    <!-- Header / Navigation -->
+    <header class="fixed w-full z-50 glass shadow-sm transition-all duration-300" id="header">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#" class="flex items-center gap-2 group">
+                        <div class="w-10 h-10 rounded-lg bg-gradient-brand flex items-center justify-center text-white shadow-lg transform transition group-hover:rotate-12">
+                            <i class="fa-solid fa-staff-snake text-xl"></i>
+                        </div>
+                        <span class="font-extrabold text-2xl tracking-tight bg-clip-text text-transparent bg-gradient-brand">Web Medic</span>
+                    </a>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#about" class="text-gray-600 hover:text-brand-purple font-medium transition">About Us</a>
+                    <a href="#services" class="text-gray-600 hover:text-brand-pink font-medium transition">What We Fix</a>
+                    <a href="#contact" class="text-gray-600 hover:text-brand-blue font-medium transition">Contact</a>
+                </nav>
+
+                <!-- CTA Button -->
+                <div class="hidden md:flex items-center">
+                    <a href="tel:+972507201430" class="bg-gradient-brand text-white px-6 py-2.5 rounded-full font-semibold shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition duration-300 flex items-center gap-2">
+                        <i class="fa-solid fa-phone"></i> Free Inspection
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-brand-purple focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 shadow-lg absolute w-full">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#about" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-purple hover:bg-gray-50">About Us</a>
+                <a href="#services" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-pink hover:bg-gray-50">What We Fix</a>
+                <a href="tel:+972507201430" class="block px-3 py-2 mt-4 text-center rounded-md text-base font-medium bg-gradient-brand text-white">Call Now: +972 50 720 1430</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden flex-grow flex items-center">
+        <!-- Abstract Background Shapes -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
+            <div class="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] rounded-full bg-brand-purple opacity-20 blur-3xl mix-blend-multiply"></div>
+            <div class="absolute top-[20%] left-[-10%] w-[600px] h-[600px] rounded-full bg-brand-pink opacity-20 blur-3xl mix-blend-multiply"></div>
+            <div class="absolute bottom-[-20%] right-[10%] w-[400px] h-[400px] rounded-full bg-brand-blue opacity-20 blur-3xl mix-blend-multiply"></div>
+        </div>
+
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Hero Content -->
+                <div class="max-w-2xl fade-in-up">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-sm border border-gray-100 mb-6 text-sm font-medium text-brand-purple">
+                        <span class="w-2 h-2 rounded-full bg-brand-pink animate-pulse"></span>
+                        Stop Losing Customers Online
+                    </div>
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
+                        We Diagnose & Cure <br />
+                        <span class="bg-clip-text text-transparent bg-gradient-brand">Website Problems</span>
+                    </h1>
+                    <p class="text-lg sm:text-xl text-gray-600 mb-8 leading-relaxed">
+                        Are visitors abandoning your site without buying? At Web Medic, we scan your website, identify the unseen issues killing your conversions, and fix them to drive traffic and increase sales.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="tel:+972507201430" class="inline-flex justify-center items-center gap-2 px-8 py-4 text-lg font-bold rounded-full text-white bg-animated shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300">
+                            <i class="fa-solid fa-stethoscope"></i> Get a Free Inspection
+                        </a>
+                        <a href="#services" class="inline-flex justify-center items-center gap-2 px-8 py-4 text-lg font-semibold rounded-full text-gray-700 bg-white border border-gray-200 hover:border-brand-lightBlue hover:text-brand-blue shadow-sm transition duration-300">
+                            See What We Fix
+                        </a>
+                    </div>
+                    <div class="mt-6 text-sm text-gray-500 flex items-center gap-2">
+                        <i class="fa-solid fa-check-circle text-green-500"></i> No commitment required. Speak directly with Mordechai.
+                    </div>
+                </div>
+
+                <!-- Hero Image/Graphic -->
+                <div class="relative hidden lg:block fade-in-up delay-200">
+                    <!-- Dashboard Mockup -->
+                    <div class="relative rounded-2xl bg-white shadow-2xl border border-gray-100 p-2 transform rotate-2 hover:rotate-0 transition duration-500">
+                        <div class="absolute top-4 left-4 flex space-x-1.5">
+                            <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                        </div>
+                        <div class="mt-8 rounded-xl bg-gray-50 p-6 border border-gray-100 h-80 flex flex-col justify-center items-center relative overflow-hidden">
+                            <!-- Scanning Animation Simulation -->
+                            <div class="w-full h-full absolute inset-0 bg-gradient-to-b from-transparent via-brand-lightBlue to-transparent opacity-20 scan-line hidden"></div>
+                            
+                            <div class="text-center">
+                                <i class="fa-solid fa-laptop-medical text-6xl text-brand-purple mb-4"></i>
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">Website Health Scan</h3>
+                                <div class="w-48 h-2 bg-gray-200 rounded-full mx-auto overflow-hidden">
+                                    <div class="h-full bg-gradient-brand w-3/4 progress-bar"></div>
+                                </div>
+                                <p class="text-sm text-gray-500 mt-2">Identifying conversion killers...</p>
+                            </div>
+
+                            <!-- Floating Error Tags -->
+                            <div class="absolute top-10 left-10 bg-red-100 text-red-600 text-xs font-bold px-3 py-1 rounded-full shadow-sm">No SSL</div>
+                            <div class="absolute bottom-16 right-10 bg-orange-100 text-orange-600 text-xs font-bold px-3 py-1 rounded-full shadow-sm">Not Mobile Friendly</div>
+                            <div class="absolute top-20 right-20 bg-yellow-100 text-yellow-600 text-xs font-bold px-3 py-1 rounded-full shadow-sm">Low Ranking</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Decorative elements -->
+                    <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-xl border border-gray-100 animate-bounce" style="animation-duration: 3s;">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-500">
+                                <i class="fa-solid fa-arrow-trend-up text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-gray-800">Traffic Increased</p>
+                                <p class="text-xs text-gray-500">+150% this month</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem/Solution Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-3xl mx-auto text-center mb-16 fade-in-up">
+                <h2 class="text-brand-pink font-bold tracking-wider uppercase text-sm mb-2">The Problem</h2>
+                <h3 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6">Why Are Visitors Leaving?</h3>
+                <p class="text-lg text-gray-600">
+                    You've worked hard to build your business, but if your website has underlying technical or structural issues, you are losing money. Visitors have short attention spans. If they encounter friction, they leave. 
+                    <span class="font-semibold text-brand-purple">We find that friction.</span>
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Step 1 -->
+                <div class="bg-gray-50 rounded-2xl p-8 border border-gray-100 text-center hover:shadow-lg transition duration-300 fade-in-up delay-100">
+                    <div class="w-16 h-16 mx-auto bg-brand-lightBlue bg-opacity-30 rounded-full flex items-center justify-center mb-6 text-brand-blue text-2xl">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-3">1. We Scan</h4>
+                    <p class="text-gray-600">We perform a comprehensive diagnostic check of your online presence to find hidden errors.</p>
+                </div>
+                <!-- Step 2 -->
+                <div class="bg-gray-50 rounded-2xl p-8 border border-gray-100 text-center hover:shadow-lg transition duration-300 fade-in-up delay-200">
+                    <div class="w-16 h-16 mx-auto bg-pink-100 rounded-full flex items-center justify-center mb-6 text-brand-pink text-2xl">
+                        <i class="fa-solid fa-list-check"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-3">2. We Diagnose</h4>
+                    <p class="text-gray-600">We provide a clear report of exactly what is stopping visitors from becoming customers.</p>
+                </div>
+                <!-- Step 3 -->
+                <div class="bg-gray-50 rounded-2xl p-8 border border-gray-100 text-center hover:shadow-lg transition duration-300 fade-in-up delay-300">
+                    <div class="w-16 h-16 mx-auto bg-purple-100 rounded-full flex items-center justify-center mb-6 text-brand-purple text-2xl">
+                        <i class="fa-solid fa-wrench"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-3">3. We Fix</h4>
+                    <p class="text-gray-600">Our experts implement the necessary solutions to heal your site and boost conversions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Symptoms/Services Section -->
+    <section id="services" class="py-20 bg-gray-50 relative border-y border-gray-200">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-[0.03] z-0" style="background-image: radial-gradient(#9333EA 2px, transparent 2px); background-size: 30px 30px;"></div>
+        
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-16 fade-in-up">
+                <h2 class="text-brand-blue font-bold tracking-wider uppercase text-sm mb-2">Our Checklist</h2>
+                <h3 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6">The Symptoms We Treat</h3>
+                <p class="text-lg text-gray-600">If your website exhibits one or more of these problems, it's hurting your bottom line. We systematically check for and resolve these critical issues.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Issue Item -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-start gap-4 hover:border-brand-purple transition group">
+                    <div class="mt-1 w-10 h-10 rounded-full bg-red-50 flex-shrink-0 flex items-center justify-center text-red-500 group-hover:bg-brand-purple group-hover:text-white transition">
+                        <i class="fa-solid fa-link-slash"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-bold text-gray-900 mb-1">No Website Connectivity</h4>
+                        <p class="text-sm text-gray-600">Downtime means lost sales. We ensure your site is online and accessible 24/7.</p>
+                    </div>
+                </div>
+
+                <!-- Issue Item -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-start gap-4 hover:border-brand-pink transition group">
+                    <div class="mt-1 w-10 h-10 rounded-full bg-red-50 flex-shrink-0 flex items-center justify-center text-red-500 group-hover:bg-brand-pink group-hover:text-white transition">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-bold text-gray-900 mb-1">Missing SSL Certificate</h4>
+                        <p class="text-sm text-gray-600">Sites without "https" are marked insecure, scaring away customers. We secure it.</p>
+                    </div>
+                </div>
+
+                <!-- Issue Item -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-start gap-4 hover:border-brand-blue transition group">
+                    <div class="mt-1 w-10 h-10 rounded-full bg-red-50 flex-shrink-0 flex items-center justify-center text-red-500 group-hover:bg-brand-blue group-hover:text-white transition">
+                        <i class="fa-brands fa-mobile-screen"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-bold text-gray-900 mb-1">Not Mobile Friendly</h4>
+                        <p class="text-sm text-gray-600">Most users browse on phones. We make sure your site looks perfect on all devices.</p>
+                    </div>
+                </div>
+
+                <!-- Issue Item -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-start gap-4 hover:border-brand-purple transition group">
+                    <div class="mt-1 w-10 h-10 rounded-full bg-orange-50 flex-shrink-0 flex items-center justify-center text-orange-500 group-hover:bg-brand-purple group-hover:text-white transition">
+                        <i class="fa-brands fa-google"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-bold text-gray-900 mb-1">Unclaimed Google Listing</h4>
+                        <p class="text-sm text-gray-600">Control your business identity. We claim and optimize your Google Business profile.</p>
+                    </div>
+                </div>
+
+                <!-- Issue Item -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-start gap-4 hover:border-brand-pink transition group">
+                    <div class="mt-1 w-10 h-10 rounded-full bg-orange-50 flex-shrink-0 flex items-center justify-center text-orange-500 group-hover:bg-brand-pink group-hover:text-white transition">
+                        <i class="fa-solid fa-arrow-down-short-wide"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-bold text-gray-900 mb-1">Low Google Ranking</h4>
+                        <p class="text-sm text-gray-600">If you aren't on page one, you don't exist. We address basic SEO issues to boost visibility.</p>
+                    </div>
+                </div>
+
+                <!-- Issue Item -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-start gap-4 hover:border-brand-blue transition group">
+                    <div class="mt-1 w-10 h-10 rounded-full bg-orange-50 flex-shrink-0 flex items-center justify-center text-orange-500 group-hover:bg-brand-blue group-hover:text-white transition">
+                        <i class="fa-solid fa-location-crosshairs"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-bold text-gray-900 mb-1">Google Listing Not Found</h4>
+                        <p class="text-sm text-gray-600">Local customers can't find you. We set up your presence on Google Maps and Search.</p>
+                    </div>
+                </div>
+
+                <!-- Issue Item -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-start gap-4 hover:border-brand-purple transition group">
+                    <div class="mt-1 w-10 h-10 rounded-full bg-yellow-50 flex-shrink-0 flex items-center justify-center text-yellow-500 group-hover:bg-brand-purple group-hover:text-white transition">
+                        <i class="fa-solid fa-phone-volume"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-bold text-gray-900 mb-1">No Click-to-Call Link</h4>
+                        <p class="text-sm text-gray-600">Make it easy to contact you. We add immediate, clickable phone links for mobile users.</p>
+                    </div>
+                </div>
+
+                <!-- Issue Item -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-start gap-4 hover:border-brand-pink transition group">
+                    <div class="mt-1 w-10 h-10 rounded-full bg-yellow-50 flex-shrink-0 flex items-center justify-center text-yellow-500 group-hover:bg-brand-pink group-hover:text-white transition">
+                        <i class="fa-solid fa-share-nodes"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-bold text-gray-900 mb-1">No Social Media Profiles</h4>
+                        <p class="text-sm text-gray-600">Missing trust signals. We connect your site to your social platforms effectively.</p>
+                    </div>
+                </div>
+
+                <!-- Issue Item -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-start gap-4 hover:border-brand-blue transition group">
+                    <div class="mt-1 w-10 h-10 rounded-full bg-yellow-50 flex-shrink-0 flex items-center justify-center text-yellow-500 group-hover:bg-brand-blue group-hover:text-white transition">
+                        <i class="fa-brands fa-wordpress"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-bold text-gray-900 mb-1">No WordPress Structure</h4>
+                        <p class="text-sm text-gray-600">Hard to manage content? We can migrate or optimize to a robust CMS if needed.</p>
+                    </div>
+                </div>
+
+                <!-- Issue Item -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-start gap-4 hover:border-brand-purple transition group lg:col-start-2">
+                    <div class="mt-1 w-10 h-10 rounded-full bg-blue-50 flex-shrink-0 flex items-center justify-center text-blue-500 group-hover:bg-brand-purple group-hover:text-white transition">
+                        <i class="fa-solid fa-video"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-bold text-gray-900 mb-1">No Video on Homepage</h4>
+                        <p class="text-sm text-gray-600">Video increases engagement dramatically. We help integrate compelling visual content.</p>
+                    </div>
+                </div>
+
+                <!-- Issue Item -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-start gap-4 hover:border-brand-pink transition group">
+                    <div class="mt-1 w-10 h-10 rounded-full bg-blue-50 flex-shrink-0 flex items-center justify-center text-blue-500 group-hover:bg-brand-pink group-hover:text-white transition">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-bold text-gray-900 mb-1">No Chat Bot / Google Revis</h4>
+                        <p class="text-sm text-gray-600">Don't lose leads after hours. We integrate tools for instant customer engagement and reviews.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <p class="text-xl font-medium text-gray-800 mb-6">Got one or more of these issues?</p>
+                <a href="#contact" class="inline-flex items-center gap-2 text-brand-purple font-bold hover:text-brand-pink transition text-lg border-b-2 border-brand-purple hover:border-brand-pink pb-1">
+                    Let's fix them together <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA / Contact Section -->
+    <section id="contact" class="py-24 relative overflow-hidden">
+        <!-- Animated Background Gradient -->
+        <div class="absolute inset-0 bg-animated opacity-90 z-0"></div>
+        
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden fade-in-up">
+                <div class="grid md:grid-cols-5 h-full">
+                    
+                    <!-- Left side - Contact Info -->
+                    <div class="md:col-span-2 bg-gray-50 p-10 flex flex-col justify-center border-r border-gray-100">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6">Ready to heal your website?</h3>
+                        <p class="text-gray-600 mb-8">Schedule your free, no-obligation website inspection today. Let's find out what's holding your business back.</p>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full bg-brand-lightBlue bg-opacity-30 flex items-center justify-center text-brand-blue flex-shrink-0">
+                                    <i class="fa-solid fa-phone-volume text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500 font-medium">Call Mordechai Directly</p>
+                                    <a href="tel:+972507201430" class="text-xl font-bold text-gray-900 hover:text-brand-purple transition block">+972 50 720 1430</a>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-brand-purple flex-shrink-0">
+                                    <i class="fa-solid fa-user-doctor text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500 font-medium">Expert Diagnosis</p>
+                                    <p class="font-bold text-gray-900">Free Inspection</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right side - Huge CTA Button -->
+                    <div class="md:col-span-3 p-10 flex flex-col items-center justify-center text-center bg-white">
+                        <div class="w-20 h-20 bg-gradient-brand rounded-full flex items-center justify-center text-white text-3xl mb-6 shadow-lg transform hover:scale-110 transition duration-300">
+                            <i class="fa-solid fa-truck-medical"></i>
+                        </div>
+                        <h4 class="text-3xl font-extrabold text-gray-900 mb-4">Don't Lose Another Customer</h4>
+                        <p class="text-gray-600 mb-8 max-w-md">Every day your website runs with these errors, you are leaving money on the table. Click below to call immediately.</p>
+                        
+                        <a href="tel:+972507201430" class="w-full sm:w-auto bg-gradient-brand text-white text-xl font-bold py-4 px-10 rounded-full shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition duration-300 flex justify-center items-center gap-3 group">
+                            <i class="fa-solid fa-phone group-hover:animate-bounce"></i> Call +972 50 720 1430
+                        </a>
+                        <p class="mt-4 text-sm text-gray-400">Ask for Mordechai</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 border-t border-gray-800">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center gap-2 mb-4 md:mb-0">
+                    <i class="fa-solid fa-staff-snake text-brand-pink text-2xl"></i>
+                    <span class="font-bold text-xl tracking-wide">Web Medic</span>
+                </div>
+                
+                <div class="text-center md:text-right">
+                    <p class="text-gray-400 text-sm">&copy; 2026 Web Medic. All rights reserved.</p>
+                    <p class="text-gray-500 text-xs mt-1">Healing websites, boosting conversions.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile menu toggle
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
+            });
+
+            // Header scroll effect
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 10) {
+                    header.classList.add('shadow-md');
+                    header.classList.replace('glass', 'bg-white');
+                } else {
+                    header.classList.remove('shadow-md');
+                    header.classList.replace('bg-white', 'glass');
+                }
+            });
+
+            // Add intersection observer for scroll animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Pause animations initially if they are below the fold
+            document.querySelectorAll('.fade-in-up').forEach((el) => {
+                el.style.animationPlayState = 'paused';
+                observer.observe(el);
+            });
+            
+            // Simple logic for the scanning progress bar in hero
+            const progressBar = document.querySelector('.progress-bar');
+            if(progressBar) {
+                setInterval(() => {
+                    progressBar.style.width = '0%';
+                    setTimeout(() => {
+                        progressBar.style.transition = 'width 2s ease-in-out';
+                        progressBar.style.width = '100%';
+                    }, 100);
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
